@@ -1,4 +1,4 @@
-import 'package:expense_tracker_fa26/widgets/expenses_list.dart';
+import 'package:expense_tracker_fa26/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker_fa26/models/expense.dart';
 import 'package:expense_tracker_fa26/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +19,17 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+  }
+
   void _openAddExpenseOverlay() {
-    showModalBottomSheet(context: context, builder: (ctx) => NewExpense(onAddExpense:_addExpense));
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+    );
   }
 
   final List<Expense> _registeredExpenses = [
@@ -56,7 +65,12 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           Text("Chart Here..."),
-          Expanded(child: ExpensesList(expenses: _registeredExpenses)),
+          Expanded(
+            child: ExpensesList(
+              onRemoveExpense: _removeExpense,
+              expenses: _registeredExpenses,
+            ),
+          ),
         ],
       ),
     );
